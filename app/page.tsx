@@ -9,7 +9,7 @@ export default function Home() {
 			{/* <ModeToggleTheme /> */}
 			{/* TODo :OTP verification Pass key modal*/}
 
-			<section className="remove-scrollbar container my-auto">
+			<section className="remove-scrollbar container">
 				<div className="sub-container max-w-[496px]">
 					<Image
 						src="/assets/icons/logo-full.svg"
@@ -20,11 +20,11 @@ export default function Home() {
 					/>
 					<PatientForm />
 					<div className="text-14-regular mt-20 flex justify-between">
-						<p className="justify-items-end to-dark-600 xl:text-left">
+						<p className="justify-items-end text-dark-600 xl:text-left">
 							© 2024 Healthcare
 						</p>
 						<Link href="/?admin=true" className="text-green-500">
-							admin
+							Admin
 						</Link>
 					</div>
 				</div>

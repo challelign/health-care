@@ -11,6 +11,8 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import { stringify } from "querystring";
+import { createUser } from "@/lib/actions/patient.actions";
+import { parseStringify } from "@/lib/utils";
 
 export function PatientForm() {
 	const [isLoading, setIsLoading] = useState(false);
@@ -36,11 +38,10 @@ export function PatientForm() {
 				phone: values.phone,
 			};
 
-			alert(stringify(userData));
-			// const user = await createUser(userData);
-			// if (user) {
-			// 	router.push(`/patients/${user.$id}/register`);
-			// }
+			const user = await createUser(userData);
+			if (user) {
+				router.push(`/patients/${user.$id}/register`);
+			}
 		} catch (error) {
 			console.log(error);
 		}
