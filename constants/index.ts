@@ -1,11 +1,12 @@
-export const GenderOptions = ["male", "female", "others"];
+export const GenderOptions = ["Male", "Female", "Other"];
+
 export const PatientFormDefaultValues = {
 	firstName: "",
 	lastName: "",
 	email: "",
 	phone: "",
 	birthDate: new Date(Date.now()),
-	gender: "male" as Gender,
+	gender: "Male" as Gender,
 	address: "",
 	occupation: "",
 	emergencyContactName: "",

@@ -18,11 +18,11 @@ export const FileUploader = ({ files, onChange }: FileUploaderProps) => {
 	return (
 		<div {...getRootProps()} className="file-upload">
 			<input {...getInputProps()} />
-			{files && files.length > 0 ? (
+			{files && files?.length > 0 ? (
 				<Image
 					src={convertFileToUrl(files[0])}
-					width={1000}
-					height={1000}
+					width={600}
+					height={600}
 					alt="Uploaded image"
 					className="max-h-[400px] overflow-hidden object-cover"
 				/>
