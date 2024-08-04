@@ -31,9 +31,9 @@ export function RegisterForm({ user }: { user: User }) {
 		resolver: zodResolver(PatientFormValidation),
 		defaultValues: {
 			...PatientFormDefaultValues,
-			name: user.name,
-			email: user.email,
-			phone: user.phone,
+			name: user.name!,
+			email: user.email!,
+			phone: user.phone!,
 		},
 	});
 
@@ -58,7 +58,7 @@ export function RegisterForm({ user }: { user: User }) {
 		try {
 			const patientData = {
 				...values,
-				birthDate: new Date(values.birthDate),
+				birthDate: new Date(values.birthDate)!,
 				identificationDocument: values.identificationDocument
 					? formData
 					: undefined,
