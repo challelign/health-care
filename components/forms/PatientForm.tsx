@@ -12,9 +12,11 @@ import SubmitButton from "../SubmitButton";
 import { useRouter } from "next/navigation";
 import { stringify } from "querystring";
 import { createUser } from "@/lib/actions/patient.actions";
-import { parseStringify } from "@/lib/utils";
+import { cn, parseStringify } from "@/lib/utils";
+import { useToast } from "../ui/use-toast";
 
 export function PatientForm() {
+	const { toast } = useToast();
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 	// 1. Define your form.
@@ -41,9 +43,35 @@ export function PatientForm() {
 			const user = await createUser(userData);
 			if (user) {
 				router.push(`/patients/${user.$id}/register`);
+				toast({
+					className: cn("bg-dark-700 text-dark-200"),
+					title: "First appointment schedule",
+					description: "First appointment register successfully",
+					// action: <ToastAction altText="Try again">Try again</ToastAction>,
+				});
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
+			if (error && error.message) {
+				const errorMessage = error.message;
+				toast({
+					/* className: cn(
+						"bg-red-700 top-0 right-0 flex fixed md:max-w-[420px] md:top-4 md:right-4"
+					), */
+					className: cn("bg-red-700"),
+					variant: "destructive",
+					title: "Error creating a new user",
+					description: `${errorMessage}`,
+					// action: <ToastAction altText="Try again">Try again</ToastAction>,
+				});
+			} else {
+				toast({
+					className: cn("bg-red-700"),
+					variant: "destructive",
+					title: "Error creating a new user",
+					description: `Something went wrong`,
+				});
+			}
 		}
 		setIsLoading(false);
 	};

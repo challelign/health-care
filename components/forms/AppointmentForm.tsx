@@ -78,6 +78,7 @@ export function AppointmentForm({
 						`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
 					);
 					toast({
+						className: cn("bg-dark-700 text-dark-200"),
 						title: "New Appointment",
 						description: `You have set new appointment successfully`,
 						// action: <ToastAction altText="Try again">Try again</ToastAction>,

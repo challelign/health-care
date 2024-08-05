@@ -22,6 +22,7 @@ import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { PatientFormValidation } from "@/lib/validation";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 export function RegisterForm({ user }: { user: User }) {
 	const { toast } = useToast();
@@ -73,6 +74,7 @@ export function RegisterForm({ user }: { user: User }) {
 			if (patient) {
 				router.push(`/patients/${user.$id}/new-appointment`);
 				toast({
+					className: cn("bg-dark-700 text-dark-200"),
 					title: "Personal Information",
 					description:
 						"You have register your personal information successfully",
@@ -84,6 +86,7 @@ export function RegisterForm({ user }: { user: User }) {
 			if (error && error.message) {
 				const errorMessage = error.message;
 				toast({
+					className: cn("bg-red-700"),
 					variant: "destructive",
 					title: "Validation Error",
 					description: `${errorMessage}`,
@@ -92,6 +95,7 @@ export function RegisterForm({ user }: { user: User }) {
 				setIsError(errorMessage);
 			} else {
 				toast({
+					className: cn("bg-red-700"),
 					variant: "destructive",
 					title: "Error creating patient",
 					description: `Something went wrong`,
