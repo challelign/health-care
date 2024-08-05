@@ -21,10 +21,14 @@ import SubmitButton from "../SubmitButton";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { PatientFormValidation } from "@/lib/validation";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 export function RegisterForm({ user }: { user: User }) {
+	const { toast } = useToast();
+
 	// if (!user) return;
 	const [isLoading, setIsLoading] = useState(false);
+	const [isError, setIsError] = useState("");
 	const router = useRouter();
 	// 1. Define your form.
 	const form = useForm<z.infer<typeof PatientFormValidation>>({
@@ -58,19 +62,42 @@ export function RegisterForm({ user }: { user: User }) {
 		try {
 			const patientData = {
 				...values,
+				userId: user.$id!,
 				birthDate: new Date(values.birthDate)!,
 				identificationDocument: values.identificationDocument
 					? formData
 					: undefined,
-				userId: user?.$id!,
 			};
 
-			const patient = await registerPatient(patientData);
+			const patient = await registerPatient(patientData as RegisterUserParams);
 			if (patient) {
 				router.push(`/patients/${user.$id}/new-appointment`);
+				toast({
+					title: "Personal Information",
+					description:
+						"You have register your personal information successfully",
+					// action: <ToastAction altText="Try again">Try again</ToastAction>,
+				});
 			}
-		} catch (error) {
-			console.log(error);
+			// console.log("patient=>", patient);
+		} catch (error: any) {
+			if (error && error.message) {
+				const errorMessage = error.message;
+				toast({
+					variant: "destructive",
+					title: "Validation Error",
+					description: `${errorMessage}`,
+					// action: <ToastAction altText="Try again">Try again</ToastAction>,
+				});
+				setIsError(errorMessage);
+			} else {
+				toast({
+					variant: "destructive",
+					title: "Error creating patient",
+					description: `Something went wrong`,
+				});
+				setIsError("Error creating patient");
+			}
 		}
 		setIsLoading(false);
 	};
@@ -320,6 +347,13 @@ export function RegisterForm({ user }: { user: User }) {
 					name="privacyConsent"
 					label="I acknowledge that I have reviewed and agree to the privacy policy"
 				/>
+				{isError && (
+					<section className="space-y-3">
+						<div className="mb-9 space-y-1    border-b pb-2">
+							<h2 className=" text-red-700">{isError}</h2>
+						</div>
+					</section>
+				)}
 				<SubmitButton isLoading={isLoading}> Get Started </SubmitButton>
 			</form>
 		</Form>

@@ -14,6 +14,7 @@ import { useState } from "react";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { SelectItem } from "../ui/select";
+import { useToast } from "../ui/use-toast";
 
 interface AppointmentFormProps {
 	userId: string;
@@ -26,6 +27,8 @@ export function AppointmentForm({
 	type,
 	patientId,
 }: AppointmentFormProps) {
+	const { toast } = useToast();
+
 	const [isLoading, setIsLoading] = useState(false);
 	const router = useRouter();
 	const AppointmentFormValidation = getAppointmentSchema(type);
@@ -74,10 +77,21 @@ export function AppointmentForm({
 					router.push(
 						`/patients/${userId}/new-appointment/success?appointmentId=${appointment.$id}`
 					);
+					toast({
+						title: "New Appointment",
+						description: `You have set new appointment successfully`,
+						// action: <ToastAction altText="Try again">Try again</ToastAction>,
+					});
 				}
 			}
-		} catch (error) {
+		} catch (error: any) {
 			console.log(error);
+			toast({
+				variant: "destructive",
+				title: "Validation Error",
+				description: `${error.message}`,
+				// action: <ToastAction altText="Try again">Try again</ToastAction>,
+			});
 		}
 		setIsLoading(false);
 	};
@@ -86,7 +100,6 @@ export function AppointmentForm({
 		case "cancel":
 			buttonLabel = "Cancel Appointment";
 			break;
-
 		case "create":
 			buttonLabel = "Create Appointment";
 			break;

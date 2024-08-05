@@ -55,7 +55,7 @@ export const registerPatient = async ({
 	...patient
 }: RegisterUserParams) => {
 	try {
-		 let file;
+		let file;
 		if (identificationDocument) {
 			const inputFile =
 				identificationDocument &&
@@ -68,11 +68,6 @@ export const registerPatient = async ({
 			file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
 		}
 
-		// console.log("identificationDocumentId &&&& URL", {
-		// 	identificationDocumentId: file?.$id || null,
-		// 	identificationDocumentUrl: `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file?.$id}/view??project=${PROJECT_ID}`,
-		// });
-		// Create new patient document -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#createDocument
 		const newPatient = await databases.createDocument(
 			DATABASE_ID!,
 			PATIENT_COLLECTION_ID!,
@@ -87,8 +82,10 @@ export const registerPatient = async ({
 		);
 
 		return parseStringify(newPatient);
-	} catch (error) {
+	} catch (error: any) {
+		console.log(error);
 		console.error("An error occurred while creating a new patient:", error);
+		throw new Error(error);
 	}
 };
 
