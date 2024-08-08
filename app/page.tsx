@@ -2,12 +2,17 @@ import { ModeToggleTheme } from "@/components/mode-toggle-theme";
 import { PatientForm } from "@/components/forms/PatientForm";
 import Image from "next/image";
 import Link from "next/link";
+import PassKeyModal from "@/components/PassKeyModal";
 
-export default function Home() {
+export default function Home({ searchParams }: SearchParamProps) {
+	const isAdmin = searchParams.admin === "true";
+
 	return (
 		<div className="flex h-screen max-h-screen">
-			{/* <ModeToggleTheme /> */}
+			<ModeToggleTheme />
 			{/* TODo :OTP verification Pass key modal*/}
+
+			{isAdmin && <PassKeyModal />}
 
 			<section className="remove-scrollbar container">
 				<div className="sub-container max-w-[496px]">
