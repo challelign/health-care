@@ -15,6 +15,7 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { SelectItem } from "../ui/select";
 import { useToast } from "../ui/use-toast";
+import { cn } from "@/lib/utils";
 
 interface AppointmentFormProps {
 	userId: string;
