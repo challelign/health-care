@@ -22,8 +22,9 @@ export const createAppointment = async (
     );
 
     return parseStringify(newAppointment);
-  } catch (error) {
+  } catch (error: any) {
     console.error("An error occurred while creating a new appointment:", error);
+    throw new Error(error);
   }
 };
 export const getAppointment = async (appointmentId: string) => {

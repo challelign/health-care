@@ -10,6 +10,27 @@ export const {
   NEXT_PUBLIC_BUCKET_ID: BUCKET_ID,
 } = process.env;
 
+// Function to check required environment variables
+const checkEnvVariables = () => {
+  const requiredVars = [
+    { name: "ENDPOINT", value: ENDPOINT },
+    { name: "PROJECT_ID", value: PROJECT_ID },
+    { name: "API_KEY", value: API_KEY },
+    { name: "DATABASE_ID", value: DATABASE_ID },
+    { name: "PATIENT_COLLECTION_ID", value: PATIENT_COLLECTION_ID },
+    { name: "DOCTOR_COLLECTION_ID", value: DOCTOR_COLLECTION_ID },
+    { name: "APPOINTMENT_COLLECTION_ID", value: APPOINTMENT_COLLECTION_ID },
+    { name: "BUCKET_ID", value: BUCKET_ID },
+  ];
+
+  requiredVars.forEach(({ name, value }) => {
+    if (!value) {
+      throw new Error(`Missing environment variable: ${name}`);
+    }
+  });
+};
+// Check environment variables
+checkEnvVariables();
 const client = new sdk.Client();
 
 client.setEndpoint(ENDPOINT!).setProject(PROJECT_ID!).setKey(API_KEY!);
