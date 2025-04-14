@@ -3,16 +3,16 @@ import { PatientForm } from "@/components/forms/PatientForm";
 import Image from "next/image";
 import Link from "next/link";
 import PassKeyModal from "@/components/PassKeyModal";
+import AdminModalHandler from "@/components/AdminModalHandler";
+export const dynamic = "force-dynamic";
 
-export default function Home({ searchParams }: SearchParamProps) {
-  const isAdmin = searchParams.admin === "true";
-
+export default function Home() {
   return (
     <div className="flex h-screen max-h-screen">
       <ModeToggleTheme />
-      {/* TODo :OTP verification Pass key modal*/}
+      {/*  OTP verification Pass key modal*/}
 
-      {isAdmin && <PassKeyModal />}
+      <AdminModalHandler />
 
       <section className="remove-scrollbar container">
         <div className="sub-container max-w-[496px]">

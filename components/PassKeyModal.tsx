@@ -1,22 +1,20 @@
 "use client";
+import { setAdminAccess } from "@/app/actions/setAdminAccess";
 import {
   AlertDialog,
   AlertDialogAction,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { decryptKey, encryptKey } from "@/lib/utils";
+import { decryptKey, deleteCookie, getCookie } from "@/lib/utils";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -32,34 +30,19 @@ const PassKeyModal = () => {
     router.push("/");
   };
 
-  const encryptedKeyCode =
-    typeof window !== "undefined"
-      ? window.localStorage.getItem("accessKey")
-      : null;
-
-  useEffect(() => {
-    const accessKeyVerify = encryptedKeyCode && decryptKey(encryptedKeyCode);
-    if (path) {
-      if (accessKeyVerify === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
-        setOpen(false);
-        router.push("/admin");
-      } else {
-        window.localStorage.removeItem("accessKey");
-        setOpen(true);
-      }
-    }
-  }, [encryptedKeyCode]);
-  const validatePasskey = (
+  const validatePasskey = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
-    if (passkey === process.env.NEXT_PUBLIC_ADMIN_PASSKEY) {
-      const encryptedKey = encryptKey(passkey);
-      console.log(encryptedKey);
-      localStorage.setItem("accessKey", encryptedKey);
+
+    const response = await setAdminAccess(passkey);
+
+    console.log("[response]", response);
+    if (response.success) {
       setOpen(false);
+      router.push("/admin");
     } else {
-      setError("Invalid passkey. Please try again.");
+      setError(response.message || "Invalid passkey. Please try again.");
     }
   };
   return (
